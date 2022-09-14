@@ -240,21 +240,6 @@ void queue_reverse(queue_t *q) {
     q->end->next = NULL;
 }
 
-/*int main (void){
-        queue_t *q = queue_new();
-        printf("%d\n",queue_size(q));
-        queue_insert_head(q,"a");
-        printf("%d\n",queue_size(q));
-        queue_insert_head(q,"b");
-        printf("%d\n",queue_size(q));
-        queue_insert_head(q,"c");
-        printf("%d\n",queue_size(q));
-        char buf[2];
-        queue_remove_head(q,buf,2);
-        printf("%s\n",buf);
-        queue_remove_head(q,buf,2);
-        printf("%s\n",buf);
-        queue_remove_head(q,buf,2);
-        printf("%s\n",buf);
-}
+/*
+test ssh
 */
