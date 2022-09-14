@@ -84,7 +84,7 @@ bool queue_insert_head(queue_t *q, const char *s) {
 
     newh->next = q->head;
     q->head = newh;
-    if (q->end == 0) {
+    if (q->size == 0) {
         q->end = newh;
     }
     q->size += 1;
@@ -127,11 +127,15 @@ bool queue_insert_tail(queue_t *q, const char *s) {
     newh->value = string;
     newh->next = NULL;
 
+    if (q->size == 0) {
+        q->end = newh;
+        q->head = newh;
+        return true;
+    }
     q->end->next = newh;
-    q->end = newh;
-
+    q->end = q->end->next;
     q->size += 1;
-    return false;
+    return true;
 }
 
 /**
@@ -191,7 +195,25 @@ size_t queue_size(queue_t *q) {
  */
 void queue_reverse(queue_t *q) {
     /* You need to write the code for this function */
-    q->size = q->size + 1 - 1;
+    if (q == NULL) {
+        return;
+    }
+    if (q->head == NULL) {
+        return;
+    }
+    q->end = q->head;
+
+    list_ele_t *reversed_first = q->head;
+    list_ele_t *remained_first = q->head->next;
+    list_ele_t *ele_to_add;
+    while (remained_first) {
+        ele_to_add = remained_first;
+        remained_first = remained_first->next;
+        ele_to_add->next = reversed_first;
+        reversed_first->next = ele_to_add;
+    }
+    q->head = reversed_first;
+    q->end->next = NULL;
 }
 
 /*int main (void){
