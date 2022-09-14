@@ -40,10 +40,17 @@ queue_t *queue_new(void) {
  */
 void queue_free(queue_t *q) {
     /* How about freeing the list elements and the strings? */
+    if (!q) {
+        return;
+    }
+
     list_ele_t *ele = q->head;
+    list_ele_t *temp;
     while (ele) {
         free(ele->value);
+        temp = ele;
         ele = ele->next;
+        free(temp);
     }
     /* Free queue structure */
     free(q);
@@ -130,6 +137,7 @@ bool queue_insert_tail(queue_t *q, const char *s) {
     if (q->size == 0) {
         q->end = newh;
         q->head = newh;
+        q->size += 1;
         return true;
     }
     q->end->next = newh;
@@ -157,10 +165,23 @@ bool queue_insert_tail(queue_t *q, const char *s) {
  */
 bool queue_remove_head(queue_t *q, char *buf, size_t bufsize) {
     /* You need to fix up this code. */
+    if (!q || !q->head) {
+        return false;
+    }
     list_ele_t *removed = q->head;
+    if (!bufsize) {
+        return false;
+    }
     if (buf) {
-        strncpy(buf, removed->value, bufsize - 1);
-        buf[bufsize - 1] = '\0';
+        size_t copy_len;
+        size_t rv_len = strlen(removed->value);
+        if (rv_len < bufsize - 1) {
+            copy_len = rv_len;
+        } else {
+            copy_len = bufsize - 1;
+        }
+        strncpy(buf, removed->value, copy_len);
+        buf[copy_len] = '\0';
     }
     q->head = q->head->next;
     free(removed->value);
@@ -181,6 +202,9 @@ bool queue_remove_head(queue_t *q, char *buf, size_t bufsize) {
 size_t queue_size(queue_t *q) {
     /* You need to write the code for this function */
     /* Remember: It should operate in O(1) time */
+    if (!q) {
+        return false;
+    }
     return (size_t)q->size;
 }
 
@@ -195,7 +219,7 @@ size_t queue_size(queue_t *q) {
  */
 void queue_reverse(queue_t *q) {
     /* You need to write the code for this function */
-    if (q == NULL) {
+    if (!q) {
         return;
     }
     if (q->size == 0 || q->size == 1) {
