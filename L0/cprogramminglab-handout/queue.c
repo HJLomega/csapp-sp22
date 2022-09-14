@@ -198,7 +198,7 @@ void queue_reverse(queue_t *q) {
     if (q == NULL) {
         return;
     }
-    if (q->head == NULL) {
+    if (q->size == 0 || q->size == 1) {
         return;
     }
     q->end = q->head;
@@ -210,7 +210,7 @@ void queue_reverse(queue_t *q) {
         ele_to_add = remained_first;
         remained_first = remained_first->next;
         ele_to_add->next = reversed_first;
-        reversed_first->next = ele_to_add;
+        reversed_first = ele_to_add;
     }
     q->head = reversed_first;
     q->end->next = NULL;
